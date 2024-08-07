@@ -1,7 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos MAX30100</title>
+    <link rel="shortcut icon" href="../img/guardme.png" type="image/x-icon">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            scroll-behavior: smooth;
+            --azul5: #1154D9;
+            --azul4: #2975D9;
+            --azul3: #5298F2;
+            --azul2: #A2C5F2;
+            --grey: #F2F2F2;
+            --grey1: #404040;
+        }
+
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--azul4);
+            color: var(--grey1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Contenedor principal */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 6px;
+            padding: 25px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: var(--azul5);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        span {
+            font-weight: bold;
+            color: var(--azul5);
+        }
+
+        /* Estilos para la barra de navegación */
+        .nav {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .nav_logo {
+            width: 200px;
+        }
+
+        .nav_list {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav_link {
+            text-decoration: none;
+            color: var(--azul4);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .nav_link:hover {
+            color: var(--azul3);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 550px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Datos del Sensor MAX30100</h1>
+        <p>Frecuencia Cardíaca: <span id="heartRate">-</span> bpm</p>
+        <p>Porcentaje de Oxígeno: <span id="spo2">-</span> %</p>
+    </div>
+
     <script type="module">
         // Importar las funciones necesarias de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
@@ -38,10 +145,5 @@
             document.getElementById('spo2').textContent = spo2 !== null ? spo2 : 'No disponible';
         });
     </script>
-</head>
-<body>
-    <h1>Datos del Sensor MAX30100</h1>
-    <p>Frecuencia Cardíaca: <span id="heartRate">-</span> bpm</p>
-    <p>Porcentaje de Oxígeno: <span id="spo2">-</span> %</p>
 </body>
 </html>
