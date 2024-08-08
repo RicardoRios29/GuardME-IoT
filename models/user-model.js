@@ -1,77 +1,35 @@
-const mysql = require("mysql");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
+// Definir el esquema del usuario
+const userSchema = new mongoose.Schema({
+    first_name: String,
+    last_name: String,
+    email: { type: String, unique: true },
+    password: String,
+    created_at: { type: Date, default: Date.now },
+    active: { type: Boolean, default: true }
+}, { collection: 'Users' });  // Especifica el nombre de la colección aquí
 
-const connection = mysql.createConnection({
-    host: "localhost",
-    port: "3306",
-    user: "root",
-    password: "rarm",
-    database: "guardme",
-  });
-  
-  connection.connect((err) => {
-    if (err) {
-      console.error("Database connection failed", err);
-      return;
+// Método estático para crear un usuario
+userSchema.statics.createUser = async function({ first_name, last_name, email, password }) {
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new this({
+            first_name,
+            last_name,
+            email,
+            password: hashedPassword
+        });
+        await user.save();
+        return { error: false, msg: 'User created successfully' };
+    } catch (error) {
+        console.error('Error creating user:', error);
+        return { error: true, msg: error.message };
     }
-    console.log("Database connection succesful");
-  });
-
-const User = {
-    async createUser(data) {
-        console.log(data)
-        
-        // Database data inseriton
-        const query =
-          "INSERT INTO users (first_name, last_name, email, password, created_at, active) VALUES (?, ?, ?, ?, CURDATE(), 1)";
-        connection.query(
-          query,
-          data,
-          (error, results) => {
-            if (error) {
-                return {error : true, msg: error}
-            } else {
-              return {error : false, msg: ''}
-            }
-          }
-        );
-
-    } 
-}
-
-const Contact = {
-  getContactByPatientID: function(id) {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        'SELECT * FROM contacts JOIN patients ON patients.id_patient = contacts.id_contact WHERE id_contact = ?',
-        [id],
-        (error, contactResults) => {
-          if (error) {
-            console.error('Contact Error:', error);
-            reject('Server Error');
-          } else {
-            // Extract relevant information
-            const contacts = contactResults.map(contact => ({
-              id_contact: contact.id_contact,
-              first_name: contact.first_name,
-              last_name: contact.last_name,
-              phone_num: contact.phone_num,
-              email: contact.email,
-              link: contact.link
-            }));
-
-            resolve(contacts);
-          }
-        }
-      );
-    });
-  }
 };
 
+// Crear el modelo de usuario
+const User = mongoose.model('User', userSchema);
 
-
-module.exports = {
-    User,
-    Contact
-}
+module.exports = { User };
