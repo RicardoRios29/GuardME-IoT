@@ -109,7 +109,7 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/justgage.min.js"></script>
-    <script src="path/to/your/js/file.js" defer></script>
+    <script type="module" src="./firebase.js"></script>
 </head>
 <body>
     <div class="container">
@@ -120,7 +120,9 @@
         <div id="gaugeSpo2" class="gauge"></div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeFirebase, updateGauges } from './firebase.js';
+
         window.addEventListener('DOMContentLoaded', (event) => {
             const gaugeHeartRate = new JustGage({
                 id: "gaugeHeartRate",
@@ -140,8 +142,7 @@
                 label: "%"
             });
 
-            // Asegúrate de que la función updateGauges esté disponible
-            const { updateGauges } = require('path/to/your/js/file.js');
+            initializeFirebase();
             updateGauges(gaugeHeartRate, gaugeSpo2);
         });
     </script>
