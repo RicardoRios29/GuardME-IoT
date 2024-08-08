@@ -1,17 +1,17 @@
 // Importar el SDK de Firebase
 const firebase = require('firebase/app');
-require('firebase/firestore'); // Importa Firestore si lo usas
+require('firebase/database');  // Importa Realtime Database
 
 // Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyA0pLcjHHprBiCmx7cil9jh7tVe2nP3bfY",
-  authDomain: "guardme-94efc.firebaseapp.com",
-  databaseURL: "https://guardme-94efc-default-rtdb.firebaseio.com",
-  projectId: "guardme-94efc",
-  storageBucket: "guardme-94efc.appspot.com",
-  messagingSenderId: "628727852133",
-  appId: "1:628727852133:web:4c8b54f9a51131211a6a8c",
-  measurementId: "G-QK8J3PFQ4W"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID",
+  measurementId: "YOUR_MEASUREMENT_ID"
 };
 
 // Inicializar Firebase
@@ -19,33 +19,29 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-// Obtener la instancia de Firestore
-const db = firebase.firestore();
+// Obtener la instancia de la base de datos en tiempo real
+const database = firebase.database();
 
-// Función para agregar un documento a Firestore
-async function addDocument(collectionName, data) {
-  try {
-    const docRef = await db.collection(collectionName).add(data);
-    console.log('Document written with ID: ', docRef.id);
-    return docRef.id;
-  } catch (error) {
-    console.error('Error adding document: ', error);
-  }
+// Función para actualizar los medidores en tiempo real
+function updateGauges(gaugeHeartRate, gaugeSpo2) {
+  const heartRateRef = database.ref('heartRate');
+  const spo2Ref = database.ref('spo2');
+
+  heartRateRef.on('value', (snapshot) => {
+    const heartRate = snapshot.val();
+    document.getElementById('heartRate').textContent = heartRate !== null ? heartRate : 'No disponible';
+    gaugeHeartRate.refresh(heartRate !== null ? heartRate : 0);
+  });
+
+  spo2Ref.on('value', (snapshot) => {
+    const spo2 = snapshot.val();
+    document.getElementById('spo2').textContent = spo2 !== null ? spo2 : 'No disponible';
+    gaugeSpo2.refresh(spo2 !== null ? spo2 : 0);
+  });
 }
 
-// Función para obtener documentos de una colección
-async function getDocuments(collectionName) {
-  try {
-    const snapshot = await db.collection(collectionName).get();
-    const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    return docs;
-  } catch (error) {
-    console.error('Error getting documents: ', error);
-  }
-}
-
-// Exportar funciones para usar en otros archivos
+// Exportar la función para usarla en el archivo HTML
 module.exports = {
-  addDocument,
-  getDocuments
+  updateGauges
 };
+

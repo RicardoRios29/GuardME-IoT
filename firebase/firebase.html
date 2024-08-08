@@ -60,6 +60,37 @@
             color: var(--azul5);
         }
 
+        /* Estilos para la barra de navegación */
+        .nav {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .nav_logo {
+            width: 200px;
+        }
+
+        .nav_list {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav_link {
+            text-decoration: none;
+            color: var(--azul4);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .nav_link:hover {
+            color: var(--azul3);
+            text-decoration: underline;
+        }
+
         @media (max-width: 550px) {
             h1 {
                 font-size: 20px;
@@ -69,69 +100,49 @@
                 font-size: 16px;
             }
         }
+
+        .gauge {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/justgage.min.js"></script>
+    <script src="path/to/your/js/file.js" defer></script>
 </head>
 <body>
     <div class="container">
         <h1>Datos del Sensor MAX30100</h1>
         <p>Frecuencia Cardíaca: <span id="heartRate">-</span> bpm</p>
+        <div id="gaugeHeartRate" class="gauge"></div>
         <p>Porcentaje de Oxígeno: <span id="spo2">-</span> %</p>
+        <div id="gaugeSpo2" class="gauge"></div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const gaugeHeartRate = new JustGage({
+                id: "gaugeHeartRate",
+                value: 0,
+                min: 0,
+                max: 200,
+                title: "Frecuencia Cardíaca",
+                label: "bpm"
+            });
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyA0pLcjHHprBiCmx7cil9jh7tVe2nP3bfY",
-            authDomain: "guardme-94efc.firebaseapp.com",
-            databaseURL: "https://guardme-94efc-default-rtdb.firebaseio.com",
-            projectId: "guardme-94efc",
-            storageBucket: "guardme-94efc.appspot.com",
-            messagingSenderId: "628727852133",
-            appId: "1:628727852133:web:4c8b54f9a51131211a6a8c",
-            measurementId: "G-QK8J3PFQ4W"
-        };
+            const gaugeSpo2 = new JustGage({
+                id: "gaugeSpo2",
+                value: 0,
+                min: 0,
+                max: 100,
+                title: "Porcentaje de Oxígeno",
+                label: "%"
+            });
 
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        const heartRateRef = ref(database, 'heartRate');
-        const spo2Ref = ref(database, 'spo2');
-
-        async function notifyBackend() {
-            try {
-                await fetch('/notify-patient-not-detected', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message: 'Paciente no detectado' })
-                });
-            } catch (error) {
-                console.error('Error al notificar al backend:', error);
-            }
-        }
-
-        onValue(heartRateRef, (snapshot) => {
-            const heartRate = snapshot.val();
-            const spo2 = document.getElementById('spo2').textContent;
-            if (spo2 === 'Paciente no detectado') {
-                document.getElementById('heartRate').textContent = 'Paciente no detectado';
-            } else {
-                document.getElementById('heartRate').textContent = heartRate !== null ? heartRate : 'No disponible';
-            }
-        });
-
-        onValue(spo2Ref, (snapshot) => {
-            const spo2 = snapshot.val();
-            if (spo2 === -999) {
-                document.getElementById('spo2').textContent = 'Paciente no detectado';
-                document.getElementById('heartRate').textContent = 'Paciente no detectado';
-                notifyBackend();
-            } else {
-                document.getElementById('spo2').textContent = spo2 !== null ? spo2 : 'No disponible';
-            }
+            // Asegúrate de que la función updateGauges esté disponible
+            const { updateGauges } = require('path/to/your/js/file.js');
+            updateGauges(gaugeHeartRate, gaugeSpo2);
         });
     </script>
 </body>
