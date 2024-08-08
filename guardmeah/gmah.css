@@ -87,7 +87,7 @@ body {
 }
 
 .hero_main {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../img/alz.jpg');
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../img/alzhome.jpg');
     background-size: cover;
     background-position: center;
     text-align: center;
@@ -385,7 +385,7 @@ form input[type="submit"] {
     }
 
     .hero_main {
-        background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../img/alz.jpg');
+        background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../img/alzhome.jpg');
         background-size: cover;
         background-position: center;
         text-align: center;
@@ -405,14 +405,14 @@ form input[type="submit"] {
     }
 
     .hero_title {
-        font-size: 7rem;
+        font-size: 5rem;
         color: #1f1f1f;
         max-width: 100%;
         margin-bottom: 20px; /* Added margin */
     }
 
     .hero_title span {
-        font-size: 10rem;
+        font-size: 6rem;
         color: var(--azul5); /* Updated */
     }
 

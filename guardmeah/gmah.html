@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GUARDME</title>
-    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./gmah.css">
     <link rel="shortcut icon" href="../img/guardme.png" type="image/x-icon">
 </head>
 <body>
@@ -14,10 +14,10 @@
             <a href="../main/main.html"><img src="../img/logonew.png" class="nav_logo" alt="GuardMe Logo"></a>
             <ul class="nav_list">
                 <li class="nav_item">
-                    <a href="#aboutus" class="nav_link">ABOUT US</a>
+                    <a href="../main/main.html" class="nav_link">ABOUT US</a>
                 </li>
                 <li class="nav_item">
-                    <a class="nav_link" id="signupbtn">SIGNUP / LOGIN</a>
+                    <a href="../register/register.html" class="nav_link">PATIENT REGISTER</a>
                 </li>
             </ul>
             <!-- MENU SANDWICH RESPONSIVE -->
@@ -26,12 +26,11 @@
         <!-- HERO TEXTOS -->
         <section class="hero_main container container--hero">
             <article class="hero_texts">
-                <h1 class="hero_title">WELCOME TO <span>GUARDME</span></h1>
-                <h2 class="hero_p">Keep your loved ones safe.</h2>
+                <h1 class="hero_title"><span>GUARDME</span> AT HOME</h1>
+                <h2 class="hero_p">Keep your loved ones safe at home.</h2>
                 <!-- BOTONES -->
                 <div class="hero_buttons">
-                    <a id="hero_cta" class="hero_cta" href="#">SIGNUP / LOGIN</a>
-                    <a id="guarmeathomebtn" class="hero_cta" href="../guardmeah/gmah.html">GuarMe At Home</a>
+                    <a id="guarmeathomebtn" class="hero_cta" href="../firebase/firebase.html">SENSORS</a>
                 </div>
             </article>
         </section>
@@ -63,37 +62,7 @@
         </div>
     </section>
 
-    <!-- ABOUT US SECTION -->
-    <section class="au" id="aboutus">
-        <div class="au_container">
-            <header>About Us</header>
-            <div class="au_what">
-                <h2>What & Who is GuardMe?</h2>
-                <p>GuardMe, a visionary project with a mission to aid others, was created with a specific purpose in mind. Alzheimer's, a widely recognized disease, relentlessly impacts lives, targeting the very essence of individuals and their cognitive well-being. The project envisions a future where innovative solutions and support systems safeguard against the challenges posed by Alzheimer's, reflecting a commitment to enhancing the quality of life for those affected by this pervasive neurological condition.</p>
-            </div>
-            <div class="au_who">
-                <h2>GuardMe's team</h2>
-                <div class="who_img">
-                    <figure class="au_img">
-                        <img src="../img/kevin.jpg" alt="Kevin">
-                    </figure>
-                    <figure class="au_img">
-                        <img src="../img/damian.jpeg" alt="Damian">
-                    </figure>
-                    <figure class="au_img">
-                        <img src="../img/richy.jpeg" alt="Richy">
-                    </figure>
-                    <figure class="au_img">
-                        <img src="../img/rober.jpg" alt="Robert">
-                    </figure>
-                    <figure class="au_img">
-                        <img src="../img/tony.jpg" alt="Tony">
-                    </figure>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <script src="./main.js"></script>
+    
+    <script src="./gmah.js"></script>
 </body>
 </html>
