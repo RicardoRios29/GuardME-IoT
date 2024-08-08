@@ -60,37 +60,6 @@
             color: var(--azul5);
         }
 
-        /* Estilos para la barra de navegación */
-        .nav {
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .nav_logo {
-            width: 200px;
-        }
-
-        .nav_list {
-            display: flex;
-            gap: 1rem;
-            list-style: none;
-        }
-
-        .nav_link {
-            text-decoration: none;
-            color: var(--azul4);
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .nav_link:hover {
-            color: var(--azul3);
-            text-decoration: underline;
-        }
-
         @media (max-width: 550px) {
             h1 {
                 font-size: 20px;
@@ -110,11 +79,9 @@
     </div>
 
     <script type="module">
-        // Importar las funciones necesarias de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
 
-        // Tu configuración de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyA0pLcjHHprBiCmx7cil9jh7tVe2nP3bfY",
             authDomain: "guardme-94efc.firebaseapp.com",
@@ -126,23 +93,45 @@
             measurementId: "G-QK8J3PFQ4W"
         };
 
-        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Referencias a los datos en Firebase
         const heartRateRef = ref(database, 'heartRate');
         const spo2Ref = ref(database, 'spo2');
 
-        // Actualizar los valores en tiempo real
+        async function notifyBackend() {
+            try {
+                await fetch('/notify-patient-not-detected', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: 'Paciente no detectado' })
+                });
+            } catch (error) {
+                console.error('Error al notificar al backend:', error);
+            }
+        }
+
         onValue(heartRateRef, (snapshot) => {
             const heartRate = snapshot.val();
-            document.getElementById('heartRate').textContent = heartRate !== null ? heartRate : 'No disponible';
+            const spo2 = document.getElementById('spo2').textContent;
+            if (spo2 === 'Paciente no detectado') {
+                document.getElementById('heartRate').textContent = 'Paciente no detectado';
+            } else {
+                document.getElementById('heartRate').textContent = heartRate !== null ? heartRate : 'No disponible';
+            }
         });
 
         onValue(spo2Ref, (snapshot) => {
             const spo2 = snapshot.val();
-            document.getElementById('spo2').textContent = spo2 !== null ? spo2 : 'No disponible';
+            if (spo2 === -999) {
+                document.getElementById('spo2').textContent = 'Paciente no detectado';
+                document.getElementById('heartRate').textContent = 'Paciente no detectado';
+                notifyBackend();
+            } else {
+                document.getElementById('spo2').textContent = spo2 !== null ? spo2 : 'No disponible';
+            }
         });
     </script>
 </body>
